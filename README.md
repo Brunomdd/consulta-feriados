@@ -4,71 +4,66 @@
 [![API](https://img.shields.io/badge/BrasilAPI-100%25-green.svg)](https://brasilapi.com.br)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**Sistema CLI em Python para consultar feriados nacionais brasileiros via BrasilAPI.**  
-Permite buscar feriados por mês/ano, listar todos do ano, visualizar e limpar histórico de consultas. Interface simples e intuitiva no terminal! [web:1][web:10]
+**Sistema CLI modular em Python para consultar feriados nacionais via BrasilAPI.**  
+Busca por mês/ano, histórico JSON persistente, interface validada no terminal. [web:1][web:2]
 
-## 🚀 Funcionalidades
-- ✅ Consultar feriados de um **mês específico** (ex: janeiro/2026)
-- ✅ Listar **todos os feriados nacionais de um ano**
-- ✅ **Histórico de consultas** salvo localmente em JSON
-- ✅ **Limpar histórico** com um clique
-- ✅ Tratamento de erros e interface amigável no terminal
-- 📱 Fácil de usar e expandir (sem dependências extras além de `requests`)
+## 🚀 Funcionalidades (Exatas do Código)
+- ✅ **Opção 1**: Feriados de **mês específico** (valida 1-12) + salva histórico
+- ✅ **Opção 2**: **Todos feriados do ano** formatados centralizados
+- ✅ **Opção 3**: Histórico completo com **timestamp da consulta**
+- ✅ **Opção 4**: Limpar histórico (confirma se existe)
+- ✅ **Opção 5**: Sair graceful
+- 🛡️ **Validações**: Input inteiro, meses 1-12, opções 1-5, erros API
 
-**Endpoint usado:** `https://brasilapi.com.br/api/feriados/v1/{ano}` – Calcula feriados móveis (Carnaval, Páscoa) + fixos. [web:15][web:2]
+**Endpoint oficial**: `GET https://brasilapi.com.br/api/feriados/v1/{ano}` (Carnaval, Páscoa calculados) [web:15]
 
 ## 📋 Como Executar
 ```bash
 git clone https://github.com/Brunomdd/consulta-feriados.git
 cd consulta-feriados
+pip install requests  # Única dependência
 python main.py
-
-Siga o menu interativo:
+Menu exato:
 
 text
-1 - Consultar feriados por mês
-2 - Listar todos feriados do ano
-3 - Ver histórico
+--------------------------------
+1 - Consultar feriados no mês
+2 - Consultar todos os feriados no ano
+3 - Ver histórico de consultas
 4 - Limpar histórico
-0 - Sair
-
-🗂️ Estrutura do Projeto
+5 - Sair do sistema
+--------------------------------
+Escolha uma opção: 
+🗂️ Estrutura (100% Modular)
 text
 consulta-feriados/
-├── main.py          # Menu principal e lógica central
-├── api.py           # Integração com BrasilAPI (GET requests)
-├── uteis.py         # Funções auxiliares (JSON load/save, input validado)
-├── feriados.json    # Histórico local de consultas
-├── README.md        # 📖 Você está aqui!
-├── LICENSE          # Licença MIT
-└── .gitignore       # Ignora __pycache__, .env, etc.
-🔧 Tecnologias
-Python 3.x – Linguagem principal
+├── main.py          # Menu + lógica (buscar_feriado, feriados_ano, listar_historico)
+├── api.py           # BrasilAPI (api_feriado com timeout=5 + 5x try/except)
+├── uteis.py         # JSON (carregar/salvar), UI (linha, leiaint loop while)
+├── feriados.json    # Auto-criado (UTF-8, indent=4)
+├── README.md
+├── LICENSE
+└── .gitignore
+💻 Exemplo Real de Saída
+Opção 1 (2026, mês 1):
 
-BrasilAPI – API pública gratuita para dados BR [web:1]
-
-JSON – Armazenamento leve de histórico
-
-Requests – Para chamadas HTTP seguras
-
-Click/Rich (opcional futuro) – Para UI mais bonita
-
-📊 Exemplo de Uso
 text
-Digite o ano (ex: 2026): 2026
-Digite o mês (1-12): 1
+Temos 1 feriados na lista
+data: 2026-01-01 - nome: Confraternização Universal
+Opção 2 (2026):
 
-Feriados em Janeiro/2026:
--  01/01 - Ano Novo
-Histórico salvo automaticamente em feriados.json!
+text
+--------------------------------
+       nome: Carnaval  
+      data: 2026-03-05  
+--------------------------------
+       nome: Ano Novo  
+      data: 2026-01-01  
+Opção 3 (Histórico):
 
-🤝 Contribuições
-Fork o repo
-
-Crie uma branch (git checkout -b feature/nova-func)
-
-Commit suas mudanças (git commit -m 'Adiciona suporte a feriados estaduais')
-
-Push para a branch (git push origin feature/nova-func)
-
-Abra um Pull Request!
+text
+Lista de consultas
+--------------------------------
+data: 2026-01-01
+feriado: Confraternização Universal
+hora da consulta: 22:00:15
