@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **Sistema CLI modular em Python para consultar feriados nacionais via BrasilAPI.**  
-Busca por mês/ano, histórico JSON persistente, interface validada no terminal. [web:1][web:2]
+Busca por mês/ano, histórico JSON persistente, interface validada no terminal. 
 
 ## 🚀 Funcionalidades (Exatas do Código)
 - ✅ **Opção 1**: Feriados de **mês específico** (valida 1-12) + salva histórico
@@ -15,7 +15,7 @@ Busca por mês/ano, histórico JSON persistente, interface validada no terminal.
 - ✅ **Opção 5**: Sair graceful
 - 🛡️ **Validações**: Input inteiro, meses 1-12, opções 1-5, erros API
 
-**Endpoint oficial**: `GET https://brasilapi.com.br/api/feriados/v1/{ano}` (Carnaval, Páscoa calculados) [web:15]
+**Endpoint oficial**: `GET https://brasilapi.com.br/api/feriados/v1/{ano}` (Carnaval, Páscoa calculados) 
 
 ## 📋 Como Executar
 ```bash
