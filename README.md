@@ -1,25 +1,39 @@
- Consulta Feriados 🇧🇷
+🇧🇷 Consulta Feriados
 
-Sistema CLI modular em Python para consultar feriados nacionais via BrasilAPI.
-Busca por mês/ano, histórico JSON persistente, interface validada no terminal.
-🚀 Funcionalidades (Exatas do Código)
+Sistema CLI modular em Python para consultar feriados nacionais via API pública.
+Permite busca por mês/ano, histórico persistente em JSON e interface validada no terminal.
 
-✅ Opção 1: Feriados de mês específico (valida 1-12) + salva histórico
-✅ Opção 2: Todos feriados do ano formatados centralizados
-✅ Opção 3: Histórico completo com timestamp da consulta
-✅ Opção 4: Limpar histórico (confirma se existe)
-✅ Opção 5: Sair graceful
-🛡️ Validações: Input inteiro, meses 1-12, opções 1-5, erros API
-Endpoint oficial: GET https://brasilapi.com.br/api/feriados/v1/{ano} (Carnaval, Páscoa calculados)
+🚀 Funcionalidades
+✅ Consultar feriados por mês
+Validação de mês (1–12)
+Salva automaticamente no histórico
+✅ Consultar todos os feriados do ano
+Exibição formatada
+✅ Histórico de consultas
+Persistência em JSON
+Exibição com timestamp
+✅ Limpar histórico
+Verifica se existe antes de apagar
+✅ Encerramento do sistema
+Saída controlada (graceful)
+🛡️ Validações
+Entrada apenas de números inteiros
+Mês válido (1–12)
+Opções do menu (1–5)
+Tratamento de erro na API
+🌐 API Utilizada
+BrasilAPI
+Endpoint:
+GET https://brasilapi.com.br/api/feriados/v1/{ano}
+
+Inclui feriados móveis como Carnaval e Páscoa.
+
 📋 Como Executar
-
 git clone https://github.com/Brunomdd/consulta-feriados.git
 cd consulta-feriados
-pip install requests # Única dependência
+pip install requests
 python main.py
-Menu exato:
-
-text
+📌 Menu do Sistema
 --------------------------------
 1 - Consultar feriados no mês
 2 - Consultar todos os feriados no ano
@@ -28,13 +42,22 @@ text
 5 - Sair do sistema
 --------------------------------
 Escolha uma opção:
-🗂️ Estrutura (100% Modular)
-text
+🗂️ Estrutura do Projeto
 consulta-feriados/
-├── main.py # Menu + lógica (buscar_feriado, feriados_ano, listar_historico)
-├── api.py # BrasilAPI (api_feriado com timeout=5 + 5x try/except)
-├── uteis.py # JSON (carregar/salvar), UI (linha, leiaint loop while)
-├── feriados.json # Auto-criado (UTF-8, indent=4)
+├── main.py        # Menu e lógica principal
+├── api.py         # Integração com API (timeout + retry)
+├── uteis.py       # JSON, validações e interface
+├── feriados.json  # Histórico persistente (auto-criado)
 ├── README.md
 ├── LICENSE
 └── .gitignore
+💡 Conceitos Aplicados
+Programação modular
+Consumo de API REST
+Manipulação de JSON
+Tratamento de exceções
+Validação de entrada
+Separação de responsabilidades
+📄 Licença
+
+Este projeto está sob a licença MIT.
