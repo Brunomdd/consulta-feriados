@@ -1,69 +1,50 @@
-# Consulta Feriados 🇧🇷
+🇧🇷 Consulta Feriados
+Sistema CLI modular em Python para consultar feriados nacionais brasileiros via BrasilAPI, com histórico persistente em JSON e interface validada no terminal.
 
-[![Python](https://img.shields.io/badge/Python-3.x-blue.svg)](https://www.python.org/)
-[![API](https://img.shields.io/badge/BrasilAPI-100%25-green.svg)](https://brasilapi.com.br)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+📌 Sobre o Projeto
+Este projeto foi desenvolvido como parte do meu aprendizado em Python, com foco em:
 
-**Sistema CLI modular em Python para consultar feriados nacionais via BrasilAPI.**  
-Busca por mês/ano, histórico JSON persistente, interface validada no terminal. 
+Integração com APIs REST externas
 
-## 🚀 Funcionalidades (Exatas do Código)
-- ✅ **Opção 1**: Feriados de **mês específico** (valida 1-12) + salva histórico
-- ✅ **Opção 2**: **Todos feriados do ano** formatados centralizados
-- ✅ **Opção 3**: Histórico completo com **timestamp da consulta**
-- ✅ **Opção 4**: Limpar histórico (confirma se existe)
-- ✅ **Opção 5**: Sair graceful
-- 🛡️ **Validações**: Input inteiro, meses 1-12, opções 1-5, erros API
+Tratamento de erros HTTP e de rede
 
-**Endpoint oficial**: `GET https://brasilapi.com.br/api/feriados/v1/{ano}` (Carnaval, Páscoa calculados) 
+Persistência de dados com arquivos JSON
 
-## 📋 Como Executar
-```bash
-git clone https://github.com/Brunomdd/consulta-feriados.git
-cd consulta-feriados
-pip install requests  # Única dependência
-python main.py
-Menu exato:
+Arquitetura modular (separação de responsabilidades)
 
-text
---------------------------------
-1 - Consultar feriados no mês
-2 - Consultar todos os feriados no ano
-3 - Ver histórico de consultas
-4 - Limpar histórico
-5 - Sair do sistema
---------------------------------
-Escolha uma opção: 
-🗂️ Estrutura (100% Modular)
+Validação de entrada do usuário no terminal
+
+A ideia é simples: o usuário informa um ano e mês, e o sistema consulta a BrasilAPI para retornar os feriados nacionais — incluindo datas móveis como Carnaval e Páscoa, que são calculadas automaticamente pela API.
+
+🚀 Funcionalidades
+Opção	Descrição
+1	Consultar feriados de um mês específico + salva no histórico
+2	Listar todos os feriados de um ano completo
+3	Ver histórico de consultas realizadas com timestamp
+4	Limpar o histórico salvo (verifica se existe antes)
+5	Sair do sistema
+🛡️ Validações implementadas
+Entrada de opções aceita somente inteiros (loop while True + try/except ValueError)
+
+Mês validado no intervalo 1 a 12
+
+Erros de API tratados individualmente: ConnectionError, Timeout, JSONDecodeError, HTTPError
+
+Histórico verifica existência antes de limpar ou listar
+
+🗂️ Arquitetura Modular
 text
 consulta-feriados/
-├── main.py          # Menu + lógica (buscar_feriado, feriados_ano, listar_historico)
-├── api.py           # BrasilAPI (api_feriado com timeout=5 + 5x try/except)
-├── uteis.py         # JSON (carregar/salvar), UI (linha, leiaint loop while)
-├── feriados.json    # Auto-criado (UTF-8, indent=4)
+├── main.py          ← Ponto de entrada: menu, lógica de negócio
+├── api.py           ← Comunicação com a BrasilAPI
+├── uteis.py         ← Utilitários: JSON, UI, input validado
+├── feriados.json    ← Histórico persistente (auto-criado, UTF-8, indent=4)
 ├── README.md
 ├── LICENSE
 └── .gitignore
-💻 Exemplo Real de Saída
-Opção 1 (2026, mês 1):
+Por que modular?
+Cada arquivo tem uma responsabilidade única:
 
-text
-Temos 1 feriados na lista
-data: 2026-01-01 - nome: Confraternização Universal
-Opção 2 (2026):
+api.py só sabe falar com a API — se a URL mudar, só este arquivo muda
 
-text
---------------------------------
-       nome: Carnaval  
-      data: 2026-03-05  
---------------------------------
-       nome: Ano Novo  
-      data: 2026-01-01  
-Opção 3 (Histórico):
-
-text
-Lista de consultas
---------------------------------
-data: 2026-01-01
-feriado: Confraternização Universal
-hora da consulta: 22:00:15
+uteis.py só sabe ler/salvar JSON e interagir
