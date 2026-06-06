@@ -13,27 +13,20 @@ def linha(l=32):
     """
     return '-' * l
 
-
-def leiaint(msg):
-    """
-    Lê um valor inteiro digitado pelo usuário.
-
-    Parâmetros:
-        msg (str): Mensagem exibida para solicitar o número.
-
-    Retorno:
-        int: Número inteiro digitado pelo usuário.
-
-    Caso o usuário digite algo que não seja número,
-    o programa continuará pedindo até receber um valor válido.
-    """
+def executar(funcao,valor):
     while True:
         try:
-            valor = int(input(msg))
-            return valor
+            valor = input(valor)
+            if not valor:
+                print('Erro! Não pode ficar vazio!')
+            return funcao(valor)
         except ValueError:
-            print('Erro, só aceitamos valores inteiros!')
+            print("Erro! digite um número inteiro ")
+            
 
+
+def leiaint(valor):
+    return executar(int,valor)
 
 def carregar():
     """

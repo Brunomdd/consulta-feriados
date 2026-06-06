@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "date": "2024-03-29",
+        "name": "Sexta-feira Santa",
+        "type": "national",
+        "weekday": "sexta-feira"
+    },
+    {
+        "date": "2024-03-31",
+        "name": "Páscoa",
+        "type": "national",
+        "weekday": "domingo"
+    }
+]

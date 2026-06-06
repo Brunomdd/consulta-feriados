@@ -53,7 +53,6 @@ def feriados_ano(ano):
         print(f"data: {f['date']}".center(32))
         print()
 
-
 def listar_historico(historico):
     """
     Mostra o histórico de consultas realizadas pelo usuário.
@@ -70,8 +69,7 @@ def listar_historico(historico):
         print(linha())
         print(f"data: {item['date']}")
         print(f"feriado: {item['name']}")
-
-    print(f'hora da consulta: {hora_atual}')
+        print(f'hora da consulta: {hora_atual}')
 
 
 def main():
