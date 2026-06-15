@@ -2,7 +2,7 @@ from api import api_feriado
 from uteis import carregar, salvar, linha, leiaint
 from datetime import datetime
 
-def buscar_feriado(ano, mes):
+def buscar_feriado_mes(ano, mes):
     """
     Busca feriados de um determinado mês e ano usando a API.
 
@@ -15,24 +15,24 @@ def buscar_feriado(ano, mes):
 
     Também salva os feriados encontrados no histórico (arquivo JSON).
     """
-    lista = carregar()
     feriados = api_feriado(ano)
-    historico = []
-
+    
     if not feriados:
         return []
 
-    for f in feriados:
-        mes_usuario = int(f['date'][5:7])
-        if mes == mes_usuario:
-            lista.append(f)
-            historico.append(f)
+    return [f for f in feriados if int(f['date'][5:7]) == mes]
 
-    salvar(lista)
-    return historico
+def salvar_consulta_historico(feriados):
+    historico = carregar()
+    for feriado in feriados:
+        item = {'nome':[feriado['name']],
+                'data':feriado['date'],
+                'consultado_em':datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+                }
+        historico.append(item)
+    salvar(historico)
 
-
-def feriados_ano(ano):
+def listar_feriados(ano):
     """
     Lista todos os feriados de um determinado ano.
 
@@ -53,23 +53,73 @@ def feriados_ano(ano):
         print(f"data: {f['date']}".center(32))
         print()
 
-def listar_historico(historico):
-    """
-    Mostra o histórico de consultas realizadas pelo usuário.
-
-    Parâmetros:
-        historico (list): Lista de feriados armazenados no arquivo JSON.
-
-    Também exibe a hora atual da consulta.
-    """
-    hora_atual = datetime.now().strftime("%H:%M:%S")
-
-    print("Lista de consultas")
+def mostrar_historico():
+    historico = carregar()
+    if not historico:
+        print('')
+        return
     for item in historico:
         print(linha())
-        print(f"data: {item['date']}")
-        print(f"feriado: {item['name']}")
-        print(f'hora da consulta: {hora_atual}')
+        print(f"Data: {item['date']}")
+        print(f"Feriado: {item['name']}")
+        print(f"Consultado em: {item['consultado_em']}")
+
+
+def consultar_feriado_por_mes():
+    ano = leiaint('digite o ano: ')
+    mes = leiaint('digite o mes: ')
+
+    if mes <1 or mes > 12:
+            print('erro. o mes precisa estar no intervalo entre 1 e 12!')
+            return
+    feriados = buscar_feriado_mes(ano, mes)
+    print(f"Temos {len(feriados)} feriados na lista")
+
+    if not  feriados:
+        print('Não tem feriado esse mes!')
+        return
+    salvar_consulta_historico(feriados)
+    for feriado in feriados:
+        print(f"data:feriado['date'] nome: {feriado['name']} ")
+
+def listar_feriados_do_ano(ano):
+    feriados = api_feriado(ano)
+    if not feriados:
+        print("Não encontramos esse ano na nossa base de dados.")
+        return
+
+    for feriado in feriados:
+        print(linha())
+        print(f"Nome: {feriado['name']}")
+        print(f"Data: {feriado['date']}")
+
+def consultar_ano_feriado():
+    ano = leiaint('digite o ano: ')
+    listar_feriados_do_ano(ano)
+    
+
+    
+def mostrar_historico():
+    historico = carregar()
+    if not historico:
+        print('')
+        return
+    for item in historico:
+        print(linha())
+        print(f"Data: {item['date']}")
+        print(f"Feriado: {item['name']}")
+        print(f"Consultado em: {item['consultado_em']}")
+
+    
+
+def limpar_historico():
+    historico = carregar()
+    if not historico:
+        print('Não ná nada para limpar no historico!')
+    else:
+        salvar([])
+        print('Historio limpo com sucesso!')
+
 
 def menu(opc):
     for valor, item in enumerate(opc,start=1):
@@ -93,61 +143,34 @@ def main():
     """
     while True:
         print(linha())
-        menu(['Consultar feriados no mes',
-             'Consultar Todos os feriados no mes',
-             'Consultar todos os feriados do ano',
-             'Ver historico de consultas',
+        menu(['Consultar feriados no mês',
+             'Consultar todos os feriados no ano',
+             'Ver histórico de consultas',
              'Limpar historico',
              'Sair do sistema',])
         print(linha())
 
         opcao = leiaint('escolha uma opção: ')
-
         if opcao == 1:
-            ano = leiaint('digite o ano: ')
-            mes = leiaint('digite o mes: ')
-
-            if mes < 1 or mes > 12:
-                print('erro. o mes precisa estar no intervalo entre 1 e 12!')
-                continue
-
-            resposta = buscar_feriado(ano, mes)
-
-            print(f"Temos {len(resposta)} feriados na lista")
-
-            if resposta:
-                for feriados in resposta:
-                    print(f"data: {feriados['date']} - nome: {feriados['name']}")
-            else:
-                print('Não tem feriado nesse mes!')
-
+           consultar_feriado_por_mes()
+        
         elif opcao == 2:
-            ano = leiaint('digite o ano: ')
-            feriados_ano(ano)
+            consultar_ano_feriado()
+            
+           
 
         elif opcao == 3:
-            historico = carregar()
-
-            if not historico:
-                print('Não há feriados para consultar no historico no momento!')
-            else:
-                listar_historico(historico)
+            mostrar_historico()
 
         elif opcao == 4:
-            limpar = carregar()
-
-            if limpar:
-                salvar([])
-                print('Historico limpo com sucesso!!')
-            else:
-                print('Não há nada para limpar no historico!')
-
+            limpar_historico()
+            
         elif opcao == 5:
             print('Saindo do sistema . . .')
             break
 
         else:
-            print('Erro, só aceitamos valores no intervalo entre 1 e 3.')
+            print('Erro, só aceitamos valores no intervalo entre 1 e 5.')
 
 
 main()
