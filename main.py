@@ -99,7 +99,6 @@ def main():
              'Ver historico de consultas',
              'Limpar historico',
              'Sair do sistema',])
-        
         print(linha())
 
         opcao = leiaint('escolha uma opção: ')
