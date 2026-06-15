@@ -71,6 +71,9 @@ def listar_historico(historico):
         print(f"feriado: {item['name']}")
         print(f'hora da consulta: {hora_atual}')
 
+def menu(opc):
+    for valor, item in enumerate(opc,start=1):
+        print(f'{valor} - {item}  ')
 
 def main():
     """
@@ -90,11 +93,13 @@ def main():
     """
     while True:
         print(linha())
-        print('1 - Consultar feriados no mes')
-        print('2 - Consultar todos os feriados no ano')
-        print('3 - Ver historico de consultas')
-        print('4 - Limpar historico')
-        print('5 - Sair do sistema')
+        menu(['Consultar feriados no mes',
+             'Consultar Todos os feriados no mes',
+             'Consultar todos os feriados do ano',
+             'Ver historico de consultas',
+             'Limpar historico',
+             'Sair do sistema',])
+        
         print(linha())
 
         opcao = leiaint('escolha uma opção: ')
